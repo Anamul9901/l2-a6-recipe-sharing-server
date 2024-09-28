@@ -7,13 +7,7 @@ const app: Application = express();
 
 app.use(express.json());
 app.use(
-  cors({
-    origin: [
-      'http://localhost:5173',
-      'https://level2-assignment4-client.vercel.app',
-    ],
-    credentials: true,
-  })
+  cors()
 );
 
 app.use('/api', router);
