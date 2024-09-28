@@ -4,7 +4,6 @@ import sendResponse from '../../utils/sendResponse';
 import { UserService } from './user.service';
 
 const signUpUser = catchAsync(async (req, res) => {
-    console.log('req===', req.body);
   const result = await UserService.signUpUserIntoDB(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,

@@ -4,9 +4,10 @@ const signUpValidationSchema = z.object({
   body: z.object({
     name: z.string(),
     email: z.string().email(),
+    role: z.enum(['admin', 'user']),
     profileImg: z.string().optional(),
     password: z
-      .string({ invalid_type_error: 'Password must be a string' })
+    .string({ invalid_type_error: 'Password must be a string' })
       .max(20, { message: 'Password can not be more than 20 caracters' }),
   }),
 });
