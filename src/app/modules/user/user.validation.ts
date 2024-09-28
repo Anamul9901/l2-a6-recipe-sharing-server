@@ -19,7 +19,16 @@ const logInValidationSchema = z.object({
   }),
 });
 
+const changePasswordValidationSchema = z.object({
+  doby: z.object({
+    email: z.string({ required_error: 'Email is required!' }),
+    prePassword: z.string({ required_error: 'Previous password is required!' }),
+    newPassword: z.string({ required_error: 'New password is required!' }),
+  })
+})
+
 export const UserValidation = {
   signUpValidationSchema,
   logInValidationSchema,
+  changePasswordValidationSchema
 };

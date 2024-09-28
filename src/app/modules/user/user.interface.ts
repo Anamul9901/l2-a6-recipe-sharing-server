@@ -9,7 +9,13 @@ export interface TUser {
   role: 'admin' | 'user';
 }
 
-export interface TLoginUser  {
-    email: string;
-    password: string;
+export interface TLoginUser {
+  email: string;
+  password: string;
+}
+
+export interface TChangePassword {
+  email: string;
+  prePassword: string;
+  newPassword: string;
 }

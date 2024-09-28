@@ -17,4 +17,10 @@ router.post(
   UserControllers.loginUser
 );
 
+router.patch(
+  '/change-password',
+  // validateRequest(UserValidation.changePasswordValidationSchema),
+  UserControllers.changePassword
+);
+
 export const UserRouter = router;
