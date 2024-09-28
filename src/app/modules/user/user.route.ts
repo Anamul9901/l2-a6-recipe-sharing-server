@@ -23,4 +23,8 @@ router.patch(
   UserControllers.changePassword
 );
 
+router.post('/forgate-password', UserControllers.forgatePassword);
+
+router.patch('/reset-password/:id/:token', UserControllers.resetPassword);
+
 export const UserRouter = router;

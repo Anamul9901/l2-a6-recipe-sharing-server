@@ -35,8 +35,35 @@ const changePassword = catchAsync(async (req, res) => {
   });
 });
 
+const forgatePassword = catchAsync(async (req, res) => {
+  console.log('from contro=----', req.body);
+  const result = await UserService.forgatePassword(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Check your email!',
+    data: result,
+  });
+});
+
+const resetPassword = catchAsync(async (req, res) => {
+  const body = req.body;
+  const params = req.params;
+  const data = { ...body, ...params };
+  await UserService.resetPassword(data);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Password reset successfully',
+  });
+});
+
 export const UserControllers = {
   signUpUser,
   loginUser,
   changePassword,
+  forgatePassword,
+  resetPassword,
 };
