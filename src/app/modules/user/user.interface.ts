@@ -12,6 +12,8 @@ export interface TUser {
   following: number;
   premium: boolean;
   payment: number;
+  isBlocked: boolean;
+  isDeleted: boolean;
 }
 
 export interface TLoginUser {

@@ -14,7 +14,27 @@ const signUpValidationSchema = z.object({
     following: z.number().optional(),
     premium: z.boolean().optional(),
     payment: z.number().optional(),
+    isBlocked: z.number().optional(),
+    isDeleted: z.number().optional(),
   }),
+});
+
+const updateUserValidationSchema = z.object({
+  body: z
+    .object({
+      name: z.string().optional(),
+      email: z.string().email().optional(),
+      role: z.enum(['admin', 'user']).optional(),
+      profileImg: z.string().optional(),
+      bio: z.string().optional(),
+      follower: z.number().optional(),
+      following: z.number().optional(),
+      premium: z.boolean().optional(),
+      payment: z.number().optional(),
+      isBlocked: z.number().optional(),
+      isDeleted: z.number().optional(),
+    })
+    .optional(),
 });
 
 const logInValidationSchema = z.object({
@@ -36,4 +56,5 @@ export const UserValidation = {
   signUpValidationSchema,
   logInValidationSchema,
   changePasswordValidationSchema,
+  updateUserValidationSchema,
 };

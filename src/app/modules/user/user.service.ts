@@ -9,14 +9,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from '../../config';
 import nodemailer from 'nodemailer';
+import { getUserInfo } from '../../middlwares/auth';
 
 const signUpUserIntoDB = async (payload: TUser) => {
-  const follower = 0;
-  const following = 0;
-  const premium = false;
-  const payment = 0;
-  const userData = { ...payload, follower, following, premium, payment };
-  const result = await User.create(userData);
+  const result = await User.create(payload);
   return result;
 };
 
@@ -197,10 +193,44 @@ const resetPassword = async (payload: any) => {
   return { message: 'Password reset successfully!' };
 };
 
+const getAllUser = async () => {
+  const result = await User.find();
+  return result;
+};
+
+const getSingleUser = async () => {
+  const user = getUserInfo();
+  const result = await User.find({ email: user?.email });
+  return result;
+};
+
+const updateUser = async (id: string, payload: TUser) => {
+  const user = getUserInfo();
+
+  const findRecipeByUser = await User.findOne({
+    email: user?.email,
+    _id: id,
+  });
+
+  let result;
+  if (findRecipeByUser || user?.role === 'admin') {
+    result = await User.findByIdAndUpdate({ _id: id }, payload, {
+      new: true,
+    });
+  } else {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'This is not your account');
+  }
+
+  return result;
+};
+
 export const UserService = {
   signUpUserIntoDB,
   loginUser,
   changePassword,
   forgatePassword,
   resetPassword,
+  getAllUser,
+  getSingleUser,
+  updateUser,
 };

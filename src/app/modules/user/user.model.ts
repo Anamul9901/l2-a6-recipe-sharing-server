@@ -15,6 +15,7 @@ const userSchema = new Schema<TUser>({
     type: String,
     required: true,
     unique: true,
+    immutable: true,
   },
   password: {
     type: String,
@@ -23,6 +24,7 @@ const userSchema = new Schema<TUser>({
   profileImg: {
     type: String,
     required: false,
+    default: 'https://i.ibb.co.com/z89cgQr/profile.webp',
   },
   role: {
     type: String,
@@ -32,22 +34,37 @@ const userSchema = new Schema<TUser>({
   bio: {
     type: String,
     required: false,
+    default: 'Add your bio',
   },
   follower: {
     type: Number,
     required: false,
+    default: 0,
   },
   following: {
     type: Number,
     required: false,
+    default: 0,
   },
   premium: {
     type: Boolean,
     required: false,
+    default: false,
   },
   payment: {
     type: Number,
     required: false,
+    default: 0,
+  },
+  isBlocked: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  isDeleted: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 
