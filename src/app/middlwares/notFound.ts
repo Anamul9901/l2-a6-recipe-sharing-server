@@ -1,13 +1,18 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import httpStatus from 'http-status';
 
-// if hit wrong route then retrn this error
-const notFound = (req: Request, res: Response, next: NextFunction) => {
-  return res.status(httpStatus.NOT_FOUND).json({
-    success: false,
-    statusCode: httpStatus.NOT_FOUND,
-    message: 'Not Found',
-  });
+// Middleware for handling 404 Not Found
+const notFound = (req: Request, res: Response, next: NextFunction): void => {
+  try {
+    res.status(httpStatus.NOT_FOUND).json({
+      success: false,
+      statusCode: httpStatus.NOT_FOUND,
+      message: 'Not Found',
+    });
+  } catch (error) {
+    // Pass the error to the next middleware
+    next(error);
+  }
 };
 
 export default notFound;
