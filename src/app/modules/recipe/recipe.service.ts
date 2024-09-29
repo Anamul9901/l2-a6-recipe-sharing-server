@@ -1,3 +1,6 @@
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
+import { getUserInfo } from '../../middlwares/auth';
 import { TRecipe } from './recipe.interface';
 import { Recipe } from './recipe.model';
 
@@ -16,10 +19,22 @@ const getSingleRecipeFromDB = async (id: string) => {
   return result;
 };
 
-const deleteRecipeFromDB = async (id: string, usreId: string) => {
-  // const userData = await
+const deleteRecipeFromDB = async (id: string) => {
+  const user = getUserInfo();
 
-  return true;
+  const findRecipeByUser = await Recipe.findOne({
+    publishUser: user?.email,
+    _id: id,
+  });
+
+  let result;
+  if (findRecipeByUser || user?.role === 'admin') {
+    result = await Recipe.deleteOne({ _id: id });
+  } else {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'This is not your recipe');
+  }
+
+  return result;
 };
 
 export const RecipeService = {

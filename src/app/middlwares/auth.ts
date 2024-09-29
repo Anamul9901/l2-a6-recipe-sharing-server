@@ -4,40 +4,49 @@ import catchAsync from '../utils/catchAsync';
 import httpStatus from 'http-status';
 import config from '../config';
 import sendResponse from '../utils/sendResponse';
+import { TUserRole } from '../types';
 
-type TUserRole = 'user' | 'admin'
+
+// Initialize userInfo
+let userInfo: JwtPayload | null = null; // Initialize as null
 
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    // get access token from headers
-    const getToken = req.headers.authorization;
-    const token = getToken!.slice(7);
+    const token = req.headers.authorization;
+
     if (!token) {
-      sendResponse(res, {
+      return sendResponse(res, {
         statusCode: httpStatus.UNAUTHORIZED,
         success: false,
         message: 'You have no access to this route',
       });
     }
 
-    // decoded access token and check validaty
-    const decoded = jwt.verify(
-      token as string,
-      config.jwt_access_secret as string
-    ) as JwtPayload;
+    try {
+      const decoded = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
+      userInfo = decoded; // Update userInfo on every request
+      req.user = decoded;
 
-    const role = decoded.role;
+      const role = decoded.role as TUserRole;
+      if (requiredRoles.length && !requiredRoles.includes(role)) {
+        return sendResponse(res, {
+          statusCode: httpStatus.FORBIDDEN,
+          success: false,
+          message: 'You do not have permission to access this route',
+        });
+      }
 
-    if (requiredRoles && !requiredRoles.includes(role)) {
-      sendResponse(res, {
+      next();
+    } catch {
+      return sendResponse(res, {
         statusCode: httpStatus.UNAUTHORIZED,
         success: false,
-        message: 'You have no access to this route',
+        message: 'Invalid token',
       });
     }
-    req.user = decoded as JwtPayload;
-    next();
   });
 };
 
+// Export the userInfo
+export const getUserInfo = () => userInfo; // Function to access userInfo
 export default auth;

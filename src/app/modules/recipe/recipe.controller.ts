@@ -2,7 +2,6 @@ import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { RecipeService } from './recipe.service';
-import { JwtPayload } from 'jsonwebtoken';
 
 const createRecipe = catchAsync(async (req, res) => {
   const result = await RecipeService.createRecipeIntoDB(req.body);
@@ -53,10 +52,9 @@ const getSingleRecipe = catchAsync(async (req, res) => {
   });
 });
 
-const deleteRecipe = catchAsync(async (req: JwtPayload, res) => {
-  const userId = req?.user;
+const deleteRecipe = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await RecipeService.deleteRecipeFromDB(id, userId);
+  const result = await RecipeService.deleteRecipeFromDB(id);
 
   if (!result) {
     sendResponse(res, {
