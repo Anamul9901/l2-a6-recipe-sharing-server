@@ -11,5 +11,10 @@ router.post(
   RecipeControllers.createRecipe
 );
 
+router.get('/', RecipeControllers.getAllRecipe);
+
+router.get('/:id', RecipeControllers.getSingleRecipe);
+
+router.delete('/', RecipeControllers.deleteRecipe);
 
 export const RecipeRouter = router;
