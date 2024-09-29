@@ -17,26 +17,32 @@ const recipeSchema = new Schema<TRecipe>({
   publishUser: {
     type: String,
     required: true,
+    immutable: true,
   },
   isPremium: {
     type: Boolean,
     required: false,
+    default: false,
   },
   isDeleted: {
     type: Boolean,
     required: false,
+    default: false,
   },
   rating: {
     type: Number,
     required: false,
+    default: 0,
   },
   upvote: {
     type: Number,
     required: false,
+    default: 0,
   },
   downvote: {
     type: Number,
     required: false,
+    default: 0,
   },
   comment: {
     type: [

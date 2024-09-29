@@ -17,6 +17,13 @@ router.get('/', RecipeControllers.getAllRecipe);
 
 router.get('/:id', RecipeControllers.getSingleRecipe);
 
+router.put(
+  '/:id',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  validateRequest(RecipeValidation.updateRecipeValidationSchema),
+  RecipeControllers.updateRecipe
+);
+
 router.delete(
   '/:id',
   auth(USER_ROLE.user, USER_ROLE.admin),

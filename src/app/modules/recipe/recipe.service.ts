@@ -19,6 +19,25 @@ const getSingleRecipeFromDB = async (id: string) => {
   return result;
 };
 
+const updateRecipeFromDB = async (id: string, payload: TRecipe) => {
+  const user = getUserInfo();
+
+  const findRecipeByUser = await Recipe.findOne({
+    publishUser: user?.email,
+    _id: id,
+  });
+
+  let result;
+  if (findRecipeByUser || user?.role === 'admin') {
+    result = await Recipe.findByIdAndUpdate({ _id: id }, payload, {
+      new: true,
+    });
+  } else {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'This is not your recipe');
+  }
+  return result;
+};
+
 const deleteRecipeFromDB = async (id: string) => {
   const user = getUserInfo();
 
@@ -41,5 +60,6 @@ export const RecipeService = {
   createRecipeIntoDB,
   getAllRecipeFromDB,
   getSingleRecipeFromDB,
+  updateRecipeFromDB,
   deleteRecipeFromDB,
 };
