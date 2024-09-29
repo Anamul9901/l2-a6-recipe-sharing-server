@@ -7,6 +7,11 @@ export interface TUser {
   profileImg: string;
   password: string;
   role: 'admin' | 'user';
+  bio: string;
+  follower: number;
+  following: number;
+  premium: boolean;
+  payment: number;
 }
 
 export interface TLoginUser {

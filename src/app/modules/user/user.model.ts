@@ -29,6 +29,26 @@ const userSchema = new Schema<TUser>({
     required: true,
     enum: ['admin', 'user'],
   },
+  bio: {
+    type: String,
+    required: false,
+  },
+  follower: {
+    type: Number,
+    required: false,
+  },
+  following: {
+    type: Number,
+    required: false,
+  },
+  premium: {
+    type: Boolean,
+    required: false,
+  },
+  payment: {
+    type: Number,
+    required: false,
+  },
 });
 
 userSchema.pre('save', async function (next) {

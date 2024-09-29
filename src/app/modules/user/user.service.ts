@@ -11,10 +11,13 @@ import config from '../../config';
 import nodemailer from 'nodemailer';
 
 const signUpUserIntoDB = async (payload: TUser) => {
-  const result = await User.create(payload);
-  const { _id, name, email, profileImg, role } = result;
-  const findResult = { _id, name, email, profileImg, role };
-  return findResult;
+  const follower = 0;
+  const following = 0;
+  const premium = false;
+  const payment = 0;
+  const userData = { ...payload, follower, following, premium, payment };
+  const result = await User.create(userData);
+  return result;
 };
 
 const loginUser = async (payload: TLoginUser) => {
@@ -37,15 +40,36 @@ const loginUser = async (payload: TLoginUser) => {
     email: isUserExists?.email,
     role: isUserExists?.role,
     userId: isUserExists?._id,
-    profileImg: isUserExists?.profileImg,
   };
 
   const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
     expiresIn: '1d',
   });
 
-  const { _id, email, password, profileImg, role } = isUserExists;
-  const userData = { _id, email, password, profileImg, role };
+  const {
+    _id,
+    email,
+    password,
+    role,
+    profileImg,
+    follower,
+    following,
+    bio,
+    premium,
+    payment,
+  } = isUserExists;
+  const userData = {
+    _id,
+    email,
+    password,
+    role,
+    profileImg,
+    follower,
+    following,
+    bio,
+    premium,
+    payment,
+  };
   return {
     token: accessToken,
     data: userData,
@@ -146,7 +170,10 @@ const resetPassword = async (payload: any) => {
   try {
     decoded = jwt.verify(token, config.jwt_access_secret as string);
   } catch (err) {
-    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Error verifying token');
+    throw new AppError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Error verifying token'
+    );
   }
 
   // Hash the new password
@@ -161,7 +188,10 @@ const resetPassword = async (payload: any) => {
   );
 
   if (updatePassword?.modifiedCount === 0) {
-    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'Password reset failed!');
+    throw new AppError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Password reset failed!'
+    );
   }
 
   return { message: 'Password reset successfully!' };
@@ -172,5 +202,5 @@ export const UserService = {
   loginUser,
   changePassword,
   forgatePassword,
-  resetPassword
+  resetPassword,
 };

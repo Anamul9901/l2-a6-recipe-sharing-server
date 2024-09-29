@@ -7,8 +7,13 @@ const signUpValidationSchema = z.object({
     role: z.enum(['admin', 'user']),
     profileImg: z.string().optional(),
     password: z
-    .string({ invalid_type_error: 'Password must be a string' })
+      .string({ invalid_type_error: 'Password must be a string' })
       .max(20, { message: 'Password can not be more than 20 caracters' }),
+    bio: z.string().optional(),
+    follower: z.number().optional(),
+    following: z.number().optional(),
+    premium: z.boolean().optional(),
+    payment: z.number().optional(),
   }),
 });
 
@@ -24,11 +29,11 @@ const changePasswordValidationSchema = z.object({
     email: z.string({ required_error: 'Email is required!' }),
     prePassword: z.string({ required_error: 'Previous password is required!' }),
     newPassword: z.string({ required_error: 'New password is required!' }),
-  })
-})
+  }),
+});
 
 export const UserValidation = {
   signUpValidationSchema,
   logInValidationSchema,
-  changePasswordValidationSchema
+  changePasswordValidationSchema,
 };
