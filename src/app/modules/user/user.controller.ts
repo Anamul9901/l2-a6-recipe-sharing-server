@@ -1,3 +1,5 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
@@ -36,7 +38,6 @@ const changePassword = catchAsync(async (req, res) => {
 });
 
 const forgatePassword = catchAsync(async (req, res) => {
-  console.log('from contro=----', req.body);
   const result = await UserService.forgatePassword(req.body);
 
   sendResponse(res, {
@@ -79,9 +80,29 @@ const getAllUser = catchAsync(async (req, res) => {
   });
 });
 
-const getSingleUser = catchAsync(async (req, res) => {
-  const result = await UserService.getSingleUser();
+const getMyData = catchAsync(async (req, res) => {
+  const result = await UserService.getMyData();
   if (!result.length) {
+    sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'User not found',
+      data: result,
+    });
+  }
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User retrieved successfully',
+    data: result,
+  });
+});
+
+const getSingleUser = catchAsync(async (req, res) => {
+  const { id } = req?.params;
+  const result = await UserService.getSingleUser(id);
+  if (!(result as any)?.length) {
     sendResponse(res, {
       statusCode: httpStatus.NOT_FOUND,
       success: false,
@@ -117,6 +138,7 @@ export const UserControllers = {
   forgatePassword,
   resetPassword,
   getAllUser,
+  getMyData,
   getSingleUser,
   updateUser,
 };

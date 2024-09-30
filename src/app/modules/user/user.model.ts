@@ -28,8 +28,9 @@ const userSchema = new Schema<TUser>({
   },
   role: {
     type: String,
-    required: true,
+    required: false,
     enum: ['admin', 'user'],
+    default: 'user',
   },
   bio: {
     type: String,

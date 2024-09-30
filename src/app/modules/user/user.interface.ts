@@ -14,6 +14,7 @@ export interface TUser {
   payment: number;
   isBlocked: boolean;
   isDeleted: boolean;
+  _id: string;
 }
 
 export interface TLoginUser {

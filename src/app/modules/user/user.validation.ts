@@ -4,7 +4,7 @@ const signUpValidationSchema = z.object({
   body: z.object({
     name: z.string(),
     email: z.string().email(),
-    role: z.enum(['admin', 'user']),
+    role: z.enum(['admin', 'user']).optional(),
     profileImg: z.string().optional(),
     password: z
       .string({ invalid_type_error: 'Password must be a string' })

@@ -13,7 +13,17 @@ import { getUserInfo } from '../../middlwares/auth';
 
 const signUpUserIntoDB = async (payload: TUser) => {
   const result = await User.create(payload);
-  return result;
+
+  const jwtPayload = {
+    email: result?.email,
+    role: result?.role,
+    userId: result?._id,
+  };
+
+  const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
+    expiresIn: '1d',
+  });
+  return { data: result, token: accessToken };
 };
 
 const loginUser = async (payload: TLoginUser) => {
@@ -121,7 +131,6 @@ const changePassword = async (payload: TChangePassword) => {
 };
 
 const forgatePassword = async (payload: any) => {
-  console.log('from-serv----', payload);
   const isUserExists = await User.findOne({ email: payload?.email });
 
   if (!isUserExists) {
@@ -198,10 +207,26 @@ const getAllUser = async () => {
   return result;
 };
 
-const getSingleUser = async () => {
+const getMyData = async () => {
   const user = getUserInfo();
   const result = await User.find({ email: user?.email });
   return result;
+};
+const getSingleUser = async (id: string) => {
+  const result = await User.findById({ _id: id });
+  const { role, profileImg, name, _id, premium, following, follower, bio } =
+    result as TUser;
+  const finalResult = {
+    role,
+    profileImg,
+    name,
+    _id,
+    premium,
+    following,
+    follower,
+    bio,
+  };
+  return finalResult;
 };
 
 const updateUser = async (id: string, payload: TUser) => {
@@ -231,6 +256,7 @@ export const UserService = {
   forgatePassword,
   resetPassword,
   getAllUser,
+  getMyData,
   getSingleUser,
   updateUser,
 };
