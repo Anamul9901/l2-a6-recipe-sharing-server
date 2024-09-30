@@ -102,15 +102,6 @@ const getMyData = catchAsync(async (req, res) => {
 const getSingleUser = catchAsync(async (req, res) => {
   const { id } = req?.params;
   const result = await UserService.getSingleUser(id);
-  if (!(result as any)?.length) {
-    sendResponse(res, {
-      statusCode: httpStatus.NOT_FOUND,
-      success: false,
-      message: 'User not found',
-      data: result,
-    });
-  }
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

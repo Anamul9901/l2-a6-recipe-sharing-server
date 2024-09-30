@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import { UserRouter } from '../modules/user/user.route';
 import { RecipeRouter } from '../modules/recipe/recipe.route';
+import { FollowerRouter } from '../modules/follower/follower.route';
 
 const router = Router();
 
@@ -13,6 +14,10 @@ const moduleRoutes: any = [
   {
     path: '/recipe',
     route: RecipeRouter,
+  },
+  {
+    path: '/follower',
+    route: FollowerRouter,
   },
 ];
 

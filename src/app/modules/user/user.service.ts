@@ -231,19 +231,36 @@ const getSingleUser = async (id: string) => {
 
 const updateUser = async (id: string, payload: TUser) => {
   const user = getUserInfo();
-
-  const findRecipeByUser = await User.findOne({
-    email: user?.email,
-    _id: id,
-  });
-
   let result;
-  if (findRecipeByUser || user?.role === 'admin') {
+  if (
+    (payload?.follower || payload?.following) &&
+    !payload?.bio &&
+    !payload?.premium &&
+    !payload?.payment &&
+    !payload?.isBlocked &&
+    !payload?.isDeleted &&
+    !payload?.name &&
+    !payload?.email &&
+    !payload?.password &&
+    !payload?.profileImg &&
+    !payload?.role
+  ) {
     result = await User.findByIdAndUpdate({ _id: id }, payload, {
       new: true,
     });
   } else {
-    throw new AppError(httpStatus.UNAUTHORIZED, 'This is not your account');
+    const findRecipeByUser = await User.findOne({
+      email: user?.email,
+      _id: id,
+    });
+
+    if (findRecipeByUser || user?.role === 'admin') {
+      result = await User.findByIdAndUpdate({ _id: id }, payload, {
+        new: true,
+      });
+    } else {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'This is not your account');
+    }
   }
 
   return result;
