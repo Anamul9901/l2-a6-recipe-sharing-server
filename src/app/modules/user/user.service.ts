@@ -137,7 +137,7 @@ const forgatePassword = async (payload: any) => {
     throw new AppError(httpStatus.NOT_FOUND, 'This user is not found!');
   }
   const accessToken = jwt.sign(
-    { id: isUserExists?._id },
+    { id: isUserExists?._id, email: isUserExists?.email },
     config.jwt_access_secret as string,
     { expiresIn: '10m' }
   );
@@ -156,7 +156,7 @@ const forgatePassword = async (payload: any) => {
     to: `${isUserExists?.email}`,
     // to: `vloggera1018@gmail.com`,
     subject: 'Reset your password',
-    text: `http://localhost:5173/reset-password/${isUserExists._id}/${accessToken}`,
+    text: `http://localhost:3000/reset-password/${accessToken}`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -169,7 +169,7 @@ const forgatePassword = async (payload: any) => {
 };
 
 const resetPassword = async (payload: any) => {
-  const { id, token, password } = payload;
+  const { token, password } = payload;
 
   let decoded: any;
   try {
@@ -180,13 +180,14 @@ const resetPassword = async (payload: any) => {
       'Error verifying token'
     );
   }
-
+  
   // Hash the new password
-  const hashedPassword = await bcrypt.hash(
+  const hashedPassword: any = await bcrypt.hash(
     password,
     Number(config.bcrypt_salt_rounds)
   );
 
+  const id = decoded?.id;
   const updatePassword = await User.updateOne(
     { _id: id },
     { password: hashedPassword }
@@ -233,7 +234,10 @@ const updateUser = async (id: string, payload: TUser) => {
   const user = getUserInfo();
   let result;
   if (
-    (payload?.follower || payload?.following) &&
+    (payload?.follower ||
+      payload?.following ||
+      payload?.follower == 0 ||
+      payload?.following == 0) &&
     !payload?.bio &&
     !payload?.premium &&
     !payload?.payment &&
