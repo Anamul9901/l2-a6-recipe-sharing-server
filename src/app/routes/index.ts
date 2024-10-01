@@ -4,6 +4,7 @@ import { UserRouter } from '../modules/user/user.route';
 import { RecipeRouter } from '../modules/recipe/recipe.route';
 import { FollowerRouter } from '../modules/follower/follower.route';
 import { RatingRouter } from '../modules/rating/rating.route';
+import { CommentRouter } from '../modules/comment/comment.route';
 
 const router = Router();
 
@@ -23,6 +24,10 @@ const moduleRoutes: any = [
   {
     path: '/rating',
     route: RatingRouter,
+  },
+  {
+    path: '/comment',
+    route: CommentRouter,
   },
 ];
 
