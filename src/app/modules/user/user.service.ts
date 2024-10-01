@@ -154,7 +154,6 @@ const forgatePassword = async (payload: any) => {
   const mailOptions = {
     from: 'anamulhaque9901@gmail.com',
     to: `${isUserExists?.email}`,
-    // to: `vloggera1018@gmail.com`,
     subject: 'Reset your password',
     text: `http://localhost:3000/reset-password/${accessToken}`,
   };
