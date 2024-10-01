@@ -12,7 +12,7 @@ const ratingSchema = new Schema<TRating>({
   },
   type: {
     type: String,
-    enum: ['rating', 'upvote'],
+    enum: ['rating', 'upvote', 'downvote'],
     required: true,
   },
 });
