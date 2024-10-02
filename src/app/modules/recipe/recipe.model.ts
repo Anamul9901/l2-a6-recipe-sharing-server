@@ -19,6 +19,11 @@ const recipeSchema = new Schema<TRecipe>({
     required: true,
     immutable: true,
   },
+  publishUserId: {
+    type: String,
+    required: true,
+    immutable: true,
+  },
   isPremium: {
     type: Boolean,
     required: false,

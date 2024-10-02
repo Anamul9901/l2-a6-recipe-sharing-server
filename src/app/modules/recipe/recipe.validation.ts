@@ -5,7 +5,8 @@ const recipeValidationSchema = z.object({
     title: z.string().nonempty({ message: 'Title is required' }),
     description: z.string().optional(),
     image: z.string().optional(),
-    publishUser: z.string().nonempty({ message: 'Publish user is required' }),
+    publishUser: z.string().nonempty({ message: 'Publish user Email is required' }),
+    publishUserId: z.string().nonempty({ message: 'Publish user Id is required' }),
     isPremium: z.boolean().optional(),
     isDeleted: z.boolean().optional(),
     rating: z

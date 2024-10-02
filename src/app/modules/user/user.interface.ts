@@ -12,6 +12,7 @@ export interface TUser {
   following: number;
   premium: boolean;
   payment: number;
+  premiumLastDate: string;
   isBlocked: boolean;
   isDeleted: boolean;
   _id: string;

@@ -13,9 +13,10 @@ const signUpValidationSchema = z.object({
     follower: z.number().optional(),
     following: z.number().optional(),
     premium: z.boolean().optional(),
+    premiumLastDate: z.boolean().optional(),
     payment: z.number().optional(),
-    isBlocked: z.number().optional(),
-    isDeleted: z.number().optional(),
+    isBlocked: z.boolean().optional(),
+    isDeleted: z.boolean().optional(),
   }),
 });
 
@@ -30,9 +31,10 @@ const updateUserValidationSchema = z.object({
       follower: z.number().optional(),
       following: z.number().optional(),
       premium: z.boolean().optional(),
+      premiumLastDate: z.boolean().optional(),
       payment: z.number().optional(),
-      isBlocked: z.number().optional(),
-      isDeleted: z.number().optional(),
+      isBlocked: z.boolean().optional(),
+      isDeleted: z.boolean().optional(),
     })
     .optional(),
 });

@@ -12,6 +12,14 @@ const commentSchema = new Schema<TComment>({
     required: true,
     immutable: true,
   },
+  commentUserImage: {
+    type: String,
+    required: true,
+  },
+  commentUserName: {
+    type: String,
+    required: true,
+  },
   comment: {
     type: String,
     required: true,

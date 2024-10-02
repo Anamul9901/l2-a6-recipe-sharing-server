@@ -52,6 +52,10 @@ const userSchema = new Schema<TUser>({
     required: false,
     default: false,
   },
+  premiumLastDate: {
+    type: String,
+    required: false,
+  },
   payment: {
     type: Number,
     required: false,

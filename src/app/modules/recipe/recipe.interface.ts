@@ -8,6 +8,7 @@ export interface TRecipe {
   description: string;
   image: string;
   publishUser: string;
+  publishUserId: string;
   isPremium: boolean;
   isDeleted: boolean;
   rating: number;

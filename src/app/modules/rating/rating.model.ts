@@ -6,6 +6,10 @@ const ratingSchema = new Schema<TRating>({
     type: String,
     required: true,
   },
+  rating: {
+    type: Number,
+    required: false,
+  },
   userEmail: {
     type: String,
     required: true,
