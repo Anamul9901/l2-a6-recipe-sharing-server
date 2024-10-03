@@ -24,10 +24,27 @@ const recipeSchema = new Schema<TRecipe>({
     required: true,
     immutable: true,
   },
+  publishUserImage: {
+    type: String,
+    required: false,
+  },
+  publishUserName: {
+    type: String,
+    required: false,
+  },
+  cookingTime: {
+    type: String,
+    required: false,
+  },
   isPremium: {
     type: Boolean,
     required: false,
     default: false,
+  },
+  idPublish: {
+    type: Boolean,
+    required: false,
+    default: true,
   },
   isDeleted: {
     type: Boolean,
@@ -49,19 +66,8 @@ const recipeSchema = new Schema<TRecipe>({
     required: false,
     default: 0,
   },
-  comment: {
-    type: [
-      {
-        user: {
-          type: String,
-          required: true,
-        },
-        message: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
+  instructions: {
+    type: String,
     required: false,
   },
 });

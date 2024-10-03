@@ -14,6 +14,12 @@ const getAllRecipeFromDB = async () => {
   return result;
 };
 
+const getAllRecipeWithShortFromDB = async (page: number, limit: number) => {
+  const skip = (page - 1) * limit;
+  const result = await Recipe.find().skip(skip).limit(limit);
+  return result;
+};
+
 const getSingleRecipeFromDB = async (id: string) => {
   const result = await Recipe.find({ _id: id });
   return result;
@@ -28,14 +34,16 @@ const updateRecipeFromDB = async (id: string, payload: TRecipe) => {
     (payload?.rating ||
       payload?.upvote ||
       payload?.downvote ||
-      (payload?.rating === 0 || payload?.upvote === 0 || payload?.downvote === 0) ||
-      payload?.comment?.length) &&
+      payload?.rating === 0 ||
+      payload?.upvote === 0 ||
+      payload?.downvote === 0) &&
     !payload?.title &&
     !payload?.description &&
     !payload?.image &&
     !payload?.publishUser &&
     !payload?.isPremium &&
-    !payload?.isDeleted
+    !payload?.isDeleted &&
+    !payload?.instructions
   ) {
     result = await Recipe.findByIdAndUpdate({ _id: id }, payload, {
       new: true,
@@ -59,7 +67,6 @@ const updateRecipeFromDB = async (id: string, payload: TRecipe) => {
   return result;
 };
 
-
 const deleteRecipeFromDB = async (id: string) => {
   const user = getUserInfo();
 
@@ -82,6 +89,7 @@ export const RecipeService = {
   createRecipeIntoDB,
   getAllRecipeFromDB,
   getSingleRecipeFromDB,
+  getAllRecipeWithShortFromDB,
   updateRecipeFromDB,
   deleteRecipeFromDB,
 };

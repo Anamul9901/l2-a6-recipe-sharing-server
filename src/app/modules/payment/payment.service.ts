@@ -7,7 +7,6 @@ import { User } from '../user/user.model';
 
 const confirmationService = async (transactionId: string, status: string) => {
   const verifyResponse = await verifyPayment(transactionId);
-
   let message = '';
 
   if (verifyResponse && verifyResponse.pay_status === 'Successful') {
@@ -18,46 +17,46 @@ const confirmationService = async (transactionId: string, status: string) => {
     );
 
     const user: any = await User.findOne({ email: verifyResponse?.cus_email });
-
-    let formattedDate: any;
     const currentDate = new Date();
+    const newPremiumLastDate = new Date(currentDate); // Start with the current date
 
-    // Determine future date based on the payment amount
-    if (verifyResponse?.amount == 300) {
-      const futureDate = new Date(
-        currentDate.setMonth(currentDate.getMonth() + 1)
-      );
-      formattedDate = futureDate.toISOString();
-    } else if (verifyResponse?.amount == 1000) {
-      const futureDate = new Date(
-        currentDate.setMonth(currentDate.getMonth() + 6)
-      );
-      formattedDate = futureDate.toISOString();
-    } else if (verifyResponse?.amount == 1500) {
-      const futureDate = new Date(
-        currentDate.setFullYear(currentDate.getFullYear() + 1)
-      );
-      formattedDate = futureDate.toISOString();
+    // Calculate the new duration based on the payment amount
+    if (verifyResponse?.amount === 300) {
+      newPremiumLastDate.setMonth(newPremiumLastDate.getMonth() + 1); // Add 1 month
+    } else if (verifyResponse?.amount === 1000) {
+      newPremiumLastDate.setMonth(newPremiumLastDate.getMonth() + 6); // Add 6 months
+    } else if (verifyResponse?.amount === 1500) {
+      newPremiumLastDate.setFullYear(newPremiumLastDate.getFullYear() + 1); // Add 1 year
     }
 
-    // Check if premiumLastDate exists and if it is in the future
-    let newPremiumLastDate: any;
-    if (user.premiumLastDate && new Date(user.premiumLastDate) > currentDate) {
+    // Update premiumLastDate based on whether it exists
+    let updatedPremiumLastDate: Date;
+
+    if (user.premiumLastDate) {
+      // If premiumLastDate exists, add to it
       const premiumLastDate = new Date(user.premiumLastDate);
-      newPremiumLastDate = new Date(
-        premiumLastDate.getTime() +
-          (new Date(formattedDate).getTime() - currentDate.getTime())
-      );
+      updatedPremiumLastDate = new Date(premiumLastDate); // Clone existing date
+
+      // Add the new premium duration
+      if (verifyResponse?.amount === 300) {
+        updatedPremiumLastDate.setMonth(updatedPremiumLastDate.getMonth() + 1); // Add 1 month
+      } else if (verifyResponse?.amount === 1000) {
+        updatedPremiumLastDate.setMonth(updatedPremiumLastDate.getMonth() + 6); // Add 6 months
+      } else if (verifyResponse?.amount === 1500) {
+        updatedPremiumLastDate.setFullYear(updatedPremiumLastDate.getFullYear() + 1); // Add 1 year
+      }
     } else {
-      newPremiumLastDate = new Date(formattedDate);
+      // If premiumLastDate does not exist, use the new calculated date
+      updatedPremiumLastDate = newPremiumLastDate;
     }
 
+    // Update the user with the new premium information
     await User.findOneAndUpdate(
       { email: verifyResponse?.cus_email },
       {
         premium: true,
-        premiumLastDate: newPremiumLastDate.toISOString(),
-        payment: user?.payment + verifyResponse?.amount,
+        premiumLastDate: updatedPremiumLastDate.toISOString(),
+        payment: Number(user?.payment) + Number(verifyResponse?.amount),
       },
       { new: true }
     );
@@ -68,7 +67,6 @@ const confirmationService = async (transactionId: string, status: string) => {
   }
 
   const filePath = join(__dirname, '../../../../src/public/index.html');
-  console.log('filepat', filePath);
   let template = readFileSync(filePath, 'utf-8');
   template = template.replace('{{message}}', message);
   template = template.replace('{{message2}}', status);

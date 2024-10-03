@@ -11,6 +11,8 @@ router.post(
   CommentControllers.createComment
 );
 
+router.get('/:id', CommentControllers.getSingleComment);
+
 router.get('/', CommentControllers.getAllComment);
 
 router.put('/:id', CommentControllers.updateComment);

@@ -8,8 +8,15 @@ import notFound from './app/middlwares/notFound';
 const app: Application = express();
 
 app.use(express.json());
-app.use(cors());
-
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+      'https://l2-a6-recipe-sharing-client.vercel.app',
+    ],
+    credentials: true
+  })
+);
 app.use('/api', router);
 
 app.use(globalErrorHandler);

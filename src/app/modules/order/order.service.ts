@@ -3,7 +3,7 @@ import { initiatePayment } from '../payment/payment.utils';
 import Order from './order.model';
 
 const createOrder = async (orderData: any) => {
-  const { user, totalPrice, startTime, endTime } = orderData;
+  const { user, totalPrice } = orderData;
 
   const transactionId = `TXN-${Date.now()}`;
   const order = new Order({
@@ -12,8 +12,6 @@ const createOrder = async (orderData: any) => {
     status: 'Pending',
     paymentStatus: 'Pending',
     transactionId,
-    startTime,
-    endTime,
   });
 
   await order.save();

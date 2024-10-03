@@ -155,7 +155,7 @@ const forgatePassword = async (payload: any) => {
     from: 'anamulhaque9901@gmail.com',
     to: `${isUserExists?.email}`,
     subject: 'Reset your password',
-    text: `http://localhost:3000/reset-password/${accessToken}`,
+    text: `https://l2-a6-recipe-sharing-client.vercel.app/reset-password/${accessToken}`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {

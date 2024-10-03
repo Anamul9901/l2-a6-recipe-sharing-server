@@ -15,6 +15,8 @@ router.post(
 
 router.get('/', RecipeControllers.getAllRecipe);
 
+router.get('/short', RecipeControllers.getAllRecipeWithShort);
+
 router.get('/:id', RecipeControllers.getSingleRecipe);
 
 router.put(

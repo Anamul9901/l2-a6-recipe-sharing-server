@@ -9,6 +9,4 @@ export type TOrder = {
   status?: 'Pending' | 'Paid' | 'Shipped' | 'Completed' | 'Cancelled';
   paymentStatus?: 'Pending' | 'Paid' | 'Failed';
   transactionId: string;
-  startTime: string;
-  endTime: string;
 };

@@ -26,14 +26,6 @@ const OrderSchema = new mongoose.Schema<TOrder>(
       type: String,
       required: true,
     },
-    startTime: {
-      type: String,
-      required: true,
-    },
-    endTime: {
-      type: String,
-      required: true,
-    },
   },
   {
     timestamps: true,

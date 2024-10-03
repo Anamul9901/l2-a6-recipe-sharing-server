@@ -6,6 +6,11 @@ const createCommentIntoDB = async (payload: TComment) => {
   return result;
 };
 
+const getSingleCommentFromDB = async (id: string) => {
+  const result = await Comment.findById({ _id: id });
+  return result;
+};
+
 const getAllCommentFromDB = async () => {
   const result = await Comment.find();
   return result;
@@ -23,6 +28,7 @@ const deleteCommentFromDB = async (id: string) => {
 
 export const CommentService = {
   createCommentIntoDB,
+  getSingleCommentFromDB,
   getAllCommentFromDB,
   updateCommentFromDB,
   deleteCommentFromDB,
